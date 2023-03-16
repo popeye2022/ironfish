@@ -5,6 +5,7 @@ members = [
     "ironfish-phase2",
     "ironfish-rust",
     "ironfish-rust-nodejs",
+    "ironfish-rust-java",
     "ironfish-zkp",
 ]
 

@@ -1,20 +1,12 @@
 [package]
-name = "ironfish-rust-nodejs"
+name = "ironfish-rust-java"
 version = "0.1.0"
-license = "MPL-2.0"
-
-[package.authors]
-workspace = true
-
-[package.edition]
-workspace = true
-
-[lib]
-crate-type = ["cdylib"]
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+jni = "0.21.0"
 base64 = "0.13.0"
 ironfish_rust = { path = "../ironfish-rust" }
 napi-derive = "=2.9.1"
@@ -22,11 +14,8 @@ napi-derive = "=2.9.1"
 napi-derive-backend = "=1.0.38"
 ironfish_mpc = { path = "../ironfish-mpc" }
 
-[dependencies.napi]
-version = "=2.9.1"
-features = ["napi6"]
+[lib]
+crate_type = ["cdylib"]
 
 [build-dependencies]
 napi-build = "2.0.1"
-
-

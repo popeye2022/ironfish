@@ -6,7 +6,7 @@ members = [
     "ironfish-rust",
     "ironfish-rust-nodejs",
     "ironfish-rust-java",
-    "ironfish-zkp",
+    "ironfish-zkp"
 ]
 
 [workspace.package]

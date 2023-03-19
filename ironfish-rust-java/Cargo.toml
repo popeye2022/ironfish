@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-jni = "0.13"
+jni = "0.21.0"
 ironfish_rust = { path = "../ironfish-rust" }
 # Pinning this can be removed if we eventually move to the latest releases againnapi-derive-backend = "=1.0.38"
 ironfish_mpc = { path = "../ironfish-mpc" }

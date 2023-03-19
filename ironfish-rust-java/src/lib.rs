@@ -48,23 +48,6 @@ use jni::objects::{JClass,JValue,JObject};
 // static SIG_LOCAL_DATE_TIME_OF: &str = "(IIIIIII)Ljava/time/LocalDateTime;";
 // static TESTING_OBJECT_STR: &str = "TESTING OBJECT";
 
-// #[no_mangle]
-// pub unsafe extern "C" fn Java_pers_metaworm_RustTest_generateKey(
-//     env: JNIEnv,
-//     _class: JClass
-// ) -> jstring {
-//     let key = SaplingKey::generate_key();
-
-//     // let spending_key = env.new_string(key.hex_spending_key()).unwrap();
-//     // let spending_key = env.new_string(key.view_key().hex_key()).unwrap();
-//     let spending_key = env.new_string(key.incoming_view_key().hex_key()).unwrap();
-//     // let spending_key = env.new_string(key.outgoing_view_key().hex_key()).unwrap();
-//     // let spending_key = env.new_string(key.public_address().hex_public_address()).unwrap();
-//     // spending_key
-//     // spending_key.drop_in_place()
-//     //  spending_key.into_inner()
-//     spending_key.into_raw()
-// }
 
 
 #[no_mangle]
@@ -74,16 +57,19 @@ pub unsafe extern "C" fn Java_com_IronFishNativeApi_generateKey(
 ) -> jobject {
     let key = SaplingKey::generate_key();
     let income_view_key = env.new_string(key.incoming_view_key().hex_key()).unwrap();
-    let out_view_key = env.new_string(key.outgoing_view_key().hex_key()).unwrap();
+    let outgoing_view_key = env.new_string(key.outgoing_view_key().hex_key()).unwrap();
+    let spending_key = env.new_string(key.hex_spending_key()).unwrap();
+    let view_key = env.new_string(key.view_key().hex_key()).unwrap();
+    let public_address = env.new_string(key.public_address().hex_public_address()).unwrap();
 
     let ironkey_class = env.find_class("com/IronFishNativeApi$IronKey").expect("cant find class");
     let iron_object  = &env.alloc_object(ironkey_class).expect("cant alloc IronKey object");
 
-    let view_key_object =  JObject::from(out_view_key);
-    let spent_key_object =  JObject::from(income_view_key);
-
-    env.set_field(iron_object, "viewKey", "Ljava/lang/String;", JValue::Object(&view_key_object)).expect("cant find viewKey type");
-    env.set_field(iron_object, "spentKey", "Ljava/lang/String;", JValue::Object(&spent_key_object)).expect("cnat find spentKey type");
+    env.set_field(iron_object, "incomingViewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(income_view_key))).expect("cnat find incomingViewKey type");
+    env.set_field(iron_object, "outgoingViewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(outgoing_view_key))).expect("cant find outgoingViewKey type");
+    env.set_field(iron_object, "spendingKey", "Ljava/lang/String;", JValue::Object(&JObject::from(spending_key))).expect("cnat find spendingKey type");
+    env.set_field(iron_object, "viewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(view_key))).expect("cnat find viewKey type");
+    env.set_field(iron_object, "publicAddress", "Ljava/lang/String;", JValue::Object(&JObject::from(public_address))).expect("cnat find publicAddress type");
 
     iron_object.as_raw()
 }
@@ -98,16 +84,19 @@ pub unsafe extern "C" fn Java_com_IronFishNativeApi_generateKeyBySeed(
     let seed = env.get_string(&_hex_key).expect("cant find hex key");
     let key = SaplingKey::from_hex(&String::from(seed)).expect("cant find seed");
     let income_view_key = env.new_string(key.incoming_view_key().hex_key()).unwrap();
-    let out_view_key = env.new_string(key.outgoing_view_key().hex_key()).unwrap();
+    let outgoing_view_key = env.new_string(key.outgoing_view_key().hex_key()).unwrap();
+    let spending_key = env.new_string(key.hex_spending_key()).unwrap();
+    let view_key = env.new_string(key.view_key().hex_key()).unwrap();
+    let public_address = env.new_string(key.public_address().hex_public_address()).unwrap();
 
     let ironkey_class = env.find_class("com/IronFishNativeApi$IronKey").expect("cant find class");
-    let iron_object  = &env.alloc_object(ironkey_class).expect("cant alloc IronKey object");
+    let iron_object  = &env.alloc_object(ironkey_class).expect("cant alloc IronKey object");    // let view_key_object =  JObject::from(out_view_key);
 
-    let view_key_object =  JObject::from(out_view_key);
-    let spent_key_object =  JObject::from(income_view_key);
-
-    env.set_field(iron_object, "viewKey", "Ljava/lang/String;", JValue::Object(&view_key_object)).expect("cant find viewKey type");
-    env.set_field(iron_object, "spentKey", "Ljava/lang/String;", JValue::Object(&spent_key_object)).expect("cnat find spentKey type");
+    env.set_field(iron_object, "incomingViewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(income_view_key))).expect("cnat find incomingViewKey type");
+    env.set_field(iron_object, "outgoingViewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(outgoing_view_key))).expect("cant find outgoingViewKey type");
+    env.set_field(iron_object, "spendingKey", "Ljava/lang/String;", JValue::Object(&JObject::from(spending_key))).expect("cnat find spendingKey type");
+    env.set_field(iron_object, "viewKey", "Ljava/lang/String;", JValue::Object(&JObject::from(view_key))).expect("cnat find viewKey type");
+    env.set_field(iron_object, "publicAddress", "Ljava/lang/String;", JValue::Object(&JObject::from(public_address))).expect("cnat find publicAddress type");
 
     iron_object.as_raw()
 }
